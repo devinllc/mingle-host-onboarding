@@ -32,16 +32,6 @@ app.post('/register', async (req, res) => {
         // Transform form data to match your API structure
         console.log('Raw form data:', formData);
 
-        // Process hobbies - backend expects comma-separated STRING, not array
-        let hobbiesString = "";
-        if (formData.hobbies) {
-            if (Array.isArray(formData.hobbies)) {
-                hobbiesString = formData.hobbies.join(', ');
-            } else if (typeof formData.hobbies === 'string') {
-                hobbiesString = formData.hobbies;
-            }
-        }
-
         // Process languages - backend expects comma-separated STRING, not array
         let languageString = "";
         if (formData.language) {
@@ -64,11 +54,11 @@ app.post('/register', async (req, res) => {
             age: parseInt(formData.age),
             dob: formData.dob,
             gender: formData.gender || "Female", // Default to Female if not provided
-            hobbies: hobbiesString, // Send as STRING, not array
-            hostingExperiences: formData.hostingExperiences,
+            hobbies: "General interests", // Default value since field was removed
+            hostingExperiences: "New to hosting", // Default value since field was removed
             language: languageString, // Send as STRING, not array
-            availability: formData.availability || "", // Optional field
-            bio: formData.bio,
+            availability: "Flexible timing", // Default value since field was removed
+            bio: "Enthusiastic host ready to connect with people", // Default value since field was removed
             occupation: formData.occupation,
             educationLevel: formData.educationLevel,
             agencyId: "674fa0e81234abcd56789abd", // Always use this specific agency ID

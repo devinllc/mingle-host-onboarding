@@ -26,6 +26,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const languageHiddenInput = document.getElementById('language');
     const dropdownArrow = document.getElementById('dropdownArrow');
 
+    // Fix mobile positioning
+    function fixMobileDropdownPosition() {
+        if (languageDropdown && window.innerWidth < 768) {
+            const buttonRect = languageDropdownButton.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const dropdownHeight = 256; // max-h-64 = 16rem = 256px
+
+            // Check if dropdown would go below viewport
+            if (buttonRect.bottom + dropdownHeight > viewportHeight) {
+                // Position above the button
+                languageDropdown.style.bottom = '100%';
+                languageDropdown.style.top = 'auto';
+                languageDropdown.style.marginBottom = '0.5rem';
+                languageDropdown.style.marginTop = '0';
+            } else {
+                // Position below the button (default)
+                languageDropdown.style.top = '100%';
+                languageDropdown.style.bottom = 'auto';
+                languageDropdown.style.marginTop = '0.5rem';
+                languageDropdown.style.marginBottom = '0';
+            }
+        }
+    }
+
     if (languageDropdownButton && languageDropdown) {
         const checkboxes = languageDropdown.querySelectorAll('input[type="checkbox"]');
 
@@ -107,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         function openDropdown() {
+            // Fix mobile positioning before showing
+            fixMobileDropdownPosition();
+
             languageDropdown.classList.remove('hidden');
             languageDropdown.style.opacity = '0';
             languageDropdown.style.transform = 'translateY(-10px)';
