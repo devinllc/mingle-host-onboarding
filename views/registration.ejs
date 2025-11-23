@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-section">
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <h1>Mingal</h1>
+                </div>
+            </div>
+
+            <div class="form-content">
+                <h2>Personal Details</h2>
+                <p class="subtitle">Please fill in your personal details to continue</p>
+
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <% if (success) { %>
+                            <div class="alert alert-success">
+                                <%= success %>
+                                    <% if (apiResponse) { %>
+                                        <div class="api-response">
+                                            <h4>✅ Host Profile Created Successfully!</h4>
+                                            <div class="response-details">
+                                                <p><strong>Host ID:</strong>
+                                                    <%= apiResponse.data.hostProfile._id %>
+                                                </p>
+                                                <p><strong>User ID:</strong>
+                                                    <%= apiResponse.data.user._id %>
+                                                </p>
+                                                <p><strong>Profile Name:</strong>
+                                                    <%= apiResponse.data.hostProfile.ProfileName %>
+                                                </p>
+                                                <p><strong>Status:</strong>
+                                                    <%= apiResponse.data.user.isActive ? 'Active' : 'Inactive' %>
+                                                </p>
+                                                <p><strong>Created:</strong>
+                                                    <%= new Date(apiResponse.data.user.createdAt).toLocaleString() %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                            </div>
+                            <% } %>
+
+                                <form action="/register" method="POST" class="registration-form">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" name="email" placeholder="Enter your email"
+                                            required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Phone Number</label>
+                                        <input type="tel" id="phoneNumber" name="phoneNumber"
+                                            placeholder="Enter your phone number" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="profileName">Profile Name</label>
+                                        <input type="text" id="profileName" name="profileName"
+                                            placeholder="Enter your profile name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="hostType">Host Type</label>
+                                        <select id="hostType" name="hostType" required>
+                                            <option value="">Select host type</option>
+                                            <option value="solo">Solo</option>
+                                            <option value="duo">Duo</option>
+                                            <option value="group">Group</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <input type="text" id="state" name="state" placeholder="Enter your state"
+                                            required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="country">Country</label>
+                                        <select id="country" name="country" required>
+                                            <option value="">Select your country</option>
+                                            <option value="India">India</option>
+                                            <option value="USA">United States</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="Canada">Canada</option>
+                                            <option value="Australia">Australia</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <input type="number" id="age" name="age" placeholder="Enter your age" min="18"
+                                            max="100" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="dob">Date of Birth</label>
+                                        <input type="date" id="dob" name="dob" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="gender">Gender</label>
+                                        <select id="gender" name="gender" required>
+                                            <option value="">Select your gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Non-binary">Non-binary</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="hobbies">Hobbies</label>
+                                        <input type="text" id="hobbies" name="hobbies"
+                                            placeholder="e.g., Dancing, Cooking, Travel Blogging (comma separated)"
+                                            required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="hostingExperiences">Hosting Experience</label>
+                                        <textarea id="hostingExperiences" name="hostingExperiences"
+                                            placeholder="Describe your hosting experience..." rows="3"
+                                            required></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="language">Languages</label>
+                                        <input type="text" id="language" name="language"
+                                            placeholder="e.g., Hindi, English, Marathi (comma separated)" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="availability">Availability</label>
+                                        <input type="text" id="availability" name="availability"
+                                            placeholder="e.g., Afternoon 2 PM – 10 PM" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="bio">Bio</label>
+                                        <textarea id="bio" name="bio"
+                                            placeholder="Tell us about yourself and what makes you a great host..."
+                                            rows="3" required></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="occupation">Occupation</label>
+                                        <input type="text" id="occupation" name="occupation"
+                                            placeholder="Enter your occupation" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="educationLevel">Education Level</label>
+                                        <select id="educationLevel" name="educationLevel" required>
+                                            <option value="">Select education level</option>
+                                            <option value="High School">High School</option>
+                                            <option value="Graduate">Graduate</option>
+                                            <option value="Post Graduate">Post Graduate</option>
+                                            <option value="PhD">PhD</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="agencyId">Agency ID (Optional)</label>
+                                        <input type="text" id="agencyId" name="agencyId"
+                                            placeholder="Enter agency ID or leave blank for default"
+                                            value="674fa0e81234abcd56789abd">
+                                    </div>
+
+                                    <div class="privacy-section">
+                                        <div class="privacy-icon">🔒</div>
+                                        <div class="privacy-text">
+                                            <h4>Safe & Secure</h4>
+                                            <p>Your profile is protected with end-to-end encryption</p>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="submit-btn">Continue to Profile Setup</button>
+                                </form>
+            </div>
+        </div>
+
+        <div class="illustration-section">
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
