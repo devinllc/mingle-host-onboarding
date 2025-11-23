@@ -188,30 +188,45 @@
                                                 <p class="text-sm text-green-800">
                                                     <%= success %>
                                                 </p>
-                                                <% if (apiResponse) { %>
+                                                <% if (apiResponse && apiResponse.data) { %>
                                                     <div class="mt-3 p-3 bg-blue-50 rounded-lg">
                                                         <h4 class="text-sm font-semibold text-blue-800 mb-2">🎉 Partner
                                                             Profile Created Successfully!</h4>
                                                         <div
                                                             class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-blue-700">
-                                                            <p><strong>Host ID:</strong>
-                                                                <%= apiResponse.data.hostProfile._id %>
-                                                            </p>
-                                                            <p><strong>User ID:</strong>
-                                                                <%= apiResponse.data.user._id %>
-                                                            </p>
-                                                            <p><strong>Profile Name:</strong>
-                                                                <%= apiResponse.data.hostProfile.ProfileName %>
-                                                            </p>
-                                                            <p><strong>Status:</strong>
-                                                                <%= apiResponse.data.user.isActive ? 'Active'
-                                                                    : 'Inactive' %>
-                                                            </p>
-                                                            <p class="md:col-span-2"><strong>Created:</strong>
-                                                                <%= new
-                                                                    Date(apiResponse.data.user.createdAt).toLocaleString()
-                                                                    %>
-                                                            </p>
+                                                            <% if (apiResponse.data.hostProfile) { %>
+                                                                <p><strong>Host ID:</strong>
+                                                                    <%= apiResponse.data.hostProfile._id || 'N/A' %>
+                                                                </p>
+                                                                <p><strong>Profile Name:</strong>
+                                                                    <%= apiResponse.data.hostProfile.ProfileName
+                                                                        || 'N/A' %>
+                                                                </p>
+                                                                <% } %>
+                                                                    <% if (apiResponse.data.user) { %>
+                                                                        <p><strong>User ID:</strong>
+                                                                            <%= apiResponse.data.user._id || 'N/A' %>
+                                                                        </p>
+                                                                        <p><strong>Status:</strong>
+                                                                            <%= apiResponse.data.user.isActive
+                                                                                ? 'Active' : 'Inactive' %>
+                                                                        </p>
+                                                                        <% if (apiResponse.data.user.createdAt) { %>
+                                                                            <p class="md:col-span-2">
+                                                                                <strong>Created:</strong>
+                                                                                <%= new
+                                                                                    Date(apiResponse.data.user.createdAt).toLocaleString()
+                                                                                    %>
+                                                                            </p>
+                                                                            <% } %>
+                                                                                <% } %>
+                                                                                    <% if (!apiResponse.data.hostProfile
+                                                                                        && !apiResponse.data.user) { %>
+                                                                                        <p
+                                                                                            class="md:col-span-2 text-center">
+                                                                                            Profile created
+                                                                                            successfully!</p>
+                                                                                        <% } %>
                                                         </div>
                                                     </div>
                                                     <% } %>

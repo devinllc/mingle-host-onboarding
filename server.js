@@ -30,20 +30,43 @@ app.post('/register', async (req, res) => {
         const formData = req.body;
 
         // Transform form data to match your API structure
+        console.log('Raw form data:', formData);
+
+        // Process hobbies - backend expects comma-separated STRING, not array
+        let hobbiesString = "";
+        if (formData.hobbies) {
+            if (Array.isArray(formData.hobbies)) {
+                hobbiesString = formData.hobbies.join(', ');
+            } else if (typeof formData.hobbies === 'string') {
+                hobbiesString = formData.hobbies;
+            }
+        }
+
+        // Process languages - backend expects comma-separated STRING, not array
+        let languageString = "";
+        if (formData.language) {
+            if (Array.isArray(formData.language)) {
+                languageString = formData.language.join(', ');
+            } else if (typeof formData.language === 'string') {
+                languageString = formData.language;
+            }
+        }
+
         const apiData = {
             phoneNumber: formData.phoneNumber,
             name: formData.name,
             email: formData.email,
             profileName: formData.profileName,
+            hostType: "solo", // Required field - default to solo since we removed it from form
             city: formData.city,
             state: formData.state,
             country: formData.country,
             age: parseInt(formData.age),
             dob: formData.dob,
             gender: formData.gender || "Female", // Default to Female if not provided
-            hobbies: formData.hobbies.split(',').map(hobby => hobby.trim()),
+            hobbies: hobbiesString, // Send as STRING, not array
             hostingExperiences: formData.hostingExperiences,
-            language: formData.language ? formData.language.split(',').map(lang => lang.trim()) : [],
+            language: languageString, // Send as STRING, not array
             availability: formData.availability || "", // Optional field
             bio: formData.bio,
             occupation: formData.occupation,
@@ -74,8 +97,27 @@ app.post('/register', async (req, res) => {
         console.error('Registration error:', error.response?.data || error.message);
 
         let errorMessage = 'Registration failed. Please try again.';
-        if (error.response?.data?.message) {
-            errorMessage = error.response.data.message;
+
+        // Handle different types of API responses
+        if (error.response?.data) {
+            if (typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE html>')) {
+                // API returned HTML instead of JSON - likely a validation error
+                if (error.response.data.includes('phoneNumber, name, profileName, city &amp; hostType are required')) {
+                    errorMessage = 'Required fields are missing. Please fill in all mandatory fields.';
+                } else if (error.response.data.includes('hobbies.split is not a function')) {
+                    errorMessage = 'Data format error. Please try again with properly formatted hobbies.';
+                } else if (error.response.data.includes('language.split is not a function')) {
+                    errorMessage = 'Data format error. Please try again with properly formatted languages.';
+                } else {
+                    errorMessage = 'Server validation error. Please check your data and try again.';
+                }
+            } else if (error.response.data.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.response.data.error) {
+                errorMessage = error.response.data.error;
+            }
+        } else if (error.message) {
+            errorMessage = `Network error: ${error.message}`;
         }
 
         res.render('partner_onboarding', {
