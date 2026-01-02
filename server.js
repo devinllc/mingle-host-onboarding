@@ -152,4 +152,5 @@ app.post('/register', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+    console.log('Mingle Host Onboarding Server Started');
 });
