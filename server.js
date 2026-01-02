@@ -14,6 +14,37 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+// Delete Account Page
+app.get('/delete-account', (req, res) => {
+    res.render('delete_account', {
+        title: 'Delete Account - Mingle',
+        error: null,
+        success: null
+    });
+});
+
+// Privacy Policy Page
+app.get('/privacy-policy', (req, res) => {
+    res.render('privacy_policy', {
+        title: 'Privacy Policy - Mingle'
+    });
+});
+
+// Terms & Conditions Page
+app.get('/terms-conditions', (req, res) => {
+    res.render('terms_conditions', {
+        title: 'Terms & Conditions - Mingle'
+    });
+});
+
+// Favicon route to prevent 404 errors
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
+});
+
+app.get('/favicon.png', (req, res) => {
+    res.status(204).end();
+});
 
 // Routes
 app.get('/', (req, res) => {
@@ -68,7 +99,7 @@ app.post('/register', async (req, res) => {
         console.log('Sending data to API:', apiData);
 
         // Call your backend API
-        const response = await axios.post('https://mingle-backend.vercel.app/api/v1/host/onboard', apiData, {
+        const response = await axios.post('https://nemesistech.in/api/v1/host/onboard', apiData, {
             headers: {
                 'Content-Type': 'application/json'
             }
