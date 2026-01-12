@@ -1,0 +1,30 @@
+{
+  "name": "mingle-partner-onboarding",
+  "version": "1.0.0",
+  "description": "Mingle Partner Onboarding Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'Build completed'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mingle",
+    "partner",
+    "onboarding",
+    "express",
+    "ejs"
+  ],
+  "author": "Mingle Team",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "body-parser": "^1.20.2",
+    "axios": "^1.6.2"
+  }
+}

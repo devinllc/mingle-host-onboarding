@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gradient-to-br from-orange-50 to-orange-100 font-inter">
+    <div class="min-h-screen flex flex-col lg:flex-row">
+        <!-- Form Section -->
+        <div class="flex-1 lg:w-1/2 p-4 lg:p-8 overflow-y-auto">
+            <div class="max-w-2xl mx-auto">
+                <!-- Header with Logo -->
+                <div class="flex items-center mb-8">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg mr-3">
+                        <img src="/css/mingle_logo.png" alt="Mingal" class="w-8 h-8 object-contain">
+                    </div>
+                    <h1 class="text-2xl font-bold text-orange-600">Mingal</h1>
+                </div>
+
+                <!-- Form Content -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 lg:p-8">
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Personal Details</h2>
+                        <p class="text-gray-600">Please fill in your personal details to continue</p>
+                    </div>
+
+                    <!-- Alert Messages -->
+                    <% if (error) { %>
+                        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-red-800">
+                                        <%= error %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                            <% if (success) { %>
+                                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm text-green-800">
+                                                <%= success %>
+                                            </p>
+                                            <% if (apiResponse) { %>
+                                                <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                                                    <h4 class="text-sm font-semibold text-blue-800 mb-2">✅ Host Profile
+                                                        Created Successfully!</h4>
+                                                    <div
+                                                        class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-blue-700">
+                                                        <p><strong>Host ID:</strong>
+                                                            <%= apiResponse.data.hostProfile._id %>
+                                                        </p>
+                                                        <p><strong>User ID:</strong>
+                                                            <%= apiResponse.data.user._id %>
+                                                        </p>
+                                                        <p><strong>Profile Name:</strong>
+                                                            <%= apiResponse.data.hostProfile.ProfileName %>
+                                                        </p>
+                                                        <p><strong>Status:</strong>
+                                                            <%= apiResponse.data.user.isActive ? 'Active' : 'Inactive'
+                                                                %>
+                                                        </p>
+                                                        <p class="md:col-span-2"><strong>Created:</strong>
+                                                            <%= new
+                                                                Date(apiResponse.data.user.createdAt).toLocaleString()
+                                                                %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                    <!-- Registration Form -->
+                                    <form action="/register" method="POST" class="space-y-6">
+                                        <!-- Personal Information Grid -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <!-- Name -->
+                                            <div>
+                                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Name <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="name" name="name" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your full name">
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div>
+                                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Email Address <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="email" id="email" name="email" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your email">
+                                            </div>
+
+                                            <!-- Phone Number -->
+                                            <div>
+                                                <label for="phoneNumber"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Phone Number <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="tel" id="phoneNumber" name="phoneNumber" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your phone number">
+                                            </div>
+
+                                            <!-- Profile Name -->
+                                            <div>
+                                                <label for="profileName"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Profile Name <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="profileName" name="profileName" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your profile name">
+                                            </div>
+
+                                            <!-- Age -->
+                                            <div>
+                                                <label for="age" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Age <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="number" id="age" name="age" min="18" max="100" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your age">
+                                            </div>
+
+                                            <!-- Date of Birth -->
+                                            <div>
+                                                <label for="dob" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Date of Birth <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="date" id="dob" name="dob" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                            </div>
+
+                                            <!-- City -->
+                                            <div>
+                                                <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    City <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="city" name="city" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your city">
+                                            </div>
+
+                                            <!-- State -->
+                                            <div>
+                                                <label for="state" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    State <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="state" name="state" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your state">
+                                            </div>
+
+                                            <!-- Country -->
+                                            <div>
+                                                <label for="country"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Country <span class="text-red-500">*</span>
+                                                </label>
+                                                <select id="country" name="country" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                                    <option value="">Select your country</option>
+                                                    <option value="India">India</option>
+                                                    <option value="USA">United States</option>
+                                                    <option value="UK">United Kingdom</option>
+                                                    <option value="Canada">Canada</option>
+                                                    <option value="Australia">Australia</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Education Level -->
+                                            <div>
+                                                <label for="educationLevel"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Education Level <span class="text-red-500">*</span>
+                                                </label>
+                                                <select id="educationLevel" name="educationLevel" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                                    <option value="">Select education level</option>
+                                                    <option value="High School">High School</option>
+                                                    <option value="Graduate">Graduate</option>
+                                                    <option value="Post Graduate">Post Graduate</option>
+                                                    <option value="PhD">PhD</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Occupation -->
+                                            <div>
+                                                <label for="occupation"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Occupation <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="occupation" name="occupation" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="Enter your occupation">
+                                            </div>
+
+                                            <!-- Languages Dropdown -->
+                                            <div>
+                                                <label for="language"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Languages <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative">
+                                                    <button id="languageDropdownButton"
+                                                        data-dropdown-toggle="languageDropdown"
+                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors bg-white text-left flex items-center justify-between"
+                                                        type="button">
+                                                        <span id="selectedLanguages" class="text-gray-500">Select
+                                                            languages</span>
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <div id="languageDropdown"
+                                                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-full border">
+                                                        <ul
+                                                            class="p-3 space-y-1 text-sm text-gray-700 max-h-48 overflow-y-auto">
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Hindi"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Hindi</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="English"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">English</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Marathi"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Marathi</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Tamil"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Tamil</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Telugu"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Telugu</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Bengali"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Bengali</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Gujarati"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Gujarati</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Kannada"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Kannada</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Malayalam"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Malayalam</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Punjabi"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Punjabi</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Urdu"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Urdu</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="Spanish"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">Spanish</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="French"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">French</span></label></li>
+                                                            <li><label
+                                                                    class="flex items-center p-2 rounded hover:bg-gray-100"><input
+                                                                        type="checkbox" value="German"
+                                                                        class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"><span
+                                                                        class="ml-2">German</span></label></li>
+                                                        </ul>
+                                                    </div>
+                                                    <input type="hidden" id="language" name="language" required>
+                                                </div>
+                                            </div>
+
+                                            <!-- Hosting Experience Dropdown -->
+                                            <div>
+                                                <label for="hostingExperiences"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Hosting Experience (Years) <span class="text-red-500">*</span>
+                                                </label>
+                                                <select id="hostingExperiences" name="hostingExperiences" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                                    <option value="">Select experience</option>
+                                                    <option value="0">0 - New to hosting</option>
+                                                    <option value="1">1 year</option>
+                                                    <option value="2">2 years</option>
+                                                    <option value="3">3 years</option>
+                                                    <option value="4">4 years</option>
+                                                    <option value="5">5+ years</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Agency ID Dropdown -->
+                                            <div>
+                                                <label for="agencyId"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Agency ID
+                                                </label>
+                                                <select id="agencyId" name="agencyId"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                                    <option value="674fa0e81234abcd56789abd">Default Agency</option>
+                                                    <option value="674fa0e81234abcd56789abc">Premium Agency</option>
+                                                    <option value="674fa0e81234abcd56789abe">Elite Agency</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Gender (Optional - Default Female) -->
+                                            <div>
+                                                <label for="gender"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Gender
+                                                </label>
+                                                <select id="gender" name="gender"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors">
+                                                    <option value="Female" selected>Female</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Non-binary">Non-binary</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Full Width Fields -->
+                                        <div class="space-y-6">
+                                            <!-- Availability (Optional) -->
+                                            <div>
+                                                <label for="availability"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Availability
+                                                </label>
+                                                <input type="text" id="availability" name="availability"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="e.g., Afternoon 2 PM – 10 PM">
+                                            </div>
+                                        </div>
+
+                                        <!-- Full Width Fields -->
+                                        <div class="space-y-6">
+                                            <!-- Hobbies -->
+                                            <div>
+                                                <label for="hobbies"
+                                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Hobbies <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="hobbies" name="hobbies" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                                                    placeholder="e.g., Dancing, Cooking, Travel Blogging (comma separated)">
+                                            </div>
+
+                                            <!-- Bio -->
+                                            <div>
+                                                <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">
+                                                    Bio <span class="text-red-500">*</span>
+                                                </label>
+                                                <textarea id="bio" name="bio" rows="3" required
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors resize-none"
+                                                    placeholder="Tell us about yourself and what makes you a great host..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Privacy Section -->
+                                        <div class="bg-gray-50 rounded-lg p-4 flex items-center space-x-3">
+                                            <div class="flex-shrink-0">
+                                                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-sm font-semibold text-gray-900">Safe & Secure</h4>
+                                                <p class="text-xs text-gray-600">Your profile is protected with
+                                                    end-to-end encryption</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <button type="submit"
+                                            class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 shadow-lg">
+                                            Continue to Profile Setup
+                                        </button>
+                                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Illustration Section -->
+        <div class="lg:w-1/2 relative overflow-hidden min-h-[300px] lg:min-h-screen">
+            <!-- Mobile: Show as header image -->
+            <div class="lg:hidden w-full h-64 relative">
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600"></div>
+                <div class="absolute inset-0 flex items-center justify-center p-4">
+                    <img src="/css/image.png" alt="Registration Illustration"
+                        class="w-full h-full object-contain max-w-sm">
+                </div>
+                <!-- Mobile Logo overlay -->
+                <div class="absolute top-4 left-4">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-2">
+                            <img src="/css/mingle_logo.png" alt="Mingal" class="w-5 h-5 object-contain">
+                        </div>
+                        <h1 class="text-lg font-bold text-white">Mingal</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop: Side panel -->
+            <div class="hidden lg:block absolute inset-0">
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600"></div>
+                <div class="absolute inset-0 flex items-center justify-center p-8">
+                    <div class="relative w-full h-full max-w-md">
+                        <img src="/css/image.png" alt="Registration Illustration" class="w-full h-full object-contain">
+                        <div class="absolute inset-0 bg-gradient-to-t from-orange-900/10 to-transparent"></div>
+                    </div>
+                </div>
+                <!-- Desktop Logo overlay -->
+                <div class="absolute top-8 left-8">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mr-3">
+                            <img src="/css/mingle_logo.png" alt="Mingal" class="w-6 h-6 object-contain">
+                        </div>
+                        <h1 class="text-xl font-bold text-white">Mingal</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
