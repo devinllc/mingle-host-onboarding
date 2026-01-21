@@ -30,6 +30,13 @@ app.get('/privacy-policy', (req, res) => {
     });
 });
 
+// Privacy Policy Page
+app.get('/child-safety', (req, res) => {
+    res.render('child_safety_policy', {
+        title: 'Child Safety Policy - Mingle'
+    });
+});
+
 // Terms & Conditions Page
 app.get('/terms-conditions', (req, res) => {
     res.render('terms_conditions', {
