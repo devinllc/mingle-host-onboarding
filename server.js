@@ -106,7 +106,7 @@ app.post('/register', async (req, res) => {
         console.log('Sending data to API:', apiData);
 
         // Call your backend API
-        const response = await axios.post('https://nemesistech.in/api/v1/host/onboard', apiData, {
+        const response = await axios.post('https://api.uff.ufdevs.live/api/v1/host/onboard', apiData, {
             headers: {
                 'Content-Type': 'application/json'
             }
